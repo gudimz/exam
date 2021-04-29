@@ -6,7 +6,7 @@
 /*   By: agigi <agigi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 19:33:36 by agigi             #+#    #+#             */
-/*   Updated: 2021/04/28 13:58:18 by agigi            ###   ########.fr       */
+/*   Updated: 2021/04/29 03:48:46 by agigi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ typedef struct	s_map
 {
 	int	with;
 	int height;
-	char background
+	char background;
 }				t_map;
 
 typedef struct	s_shape
@@ -81,7 +81,7 @@ void ft_init_map(t_map *map)
 	ret = fscanf(g_file, "%d %d %c\n", &map->with, &map->height, &map->background);
 	if(ret != 3)
 		ft_error_message("Error: Operation file corrupted\n");
-	if(map->height <= 0 || map->height > 300)
+	if(map->with <= 0 || map->with > 300)
 		ft_error_message("Error: Operation file corrupted\n");
 	if(map->height <= 0 || map->height > 300)
 		ft_error_message("Error: Operation file corrupted\n");
@@ -90,53 +90,83 @@ void ft_init_map(t_map *map)
 	ft_paint_background(map);
 }
 
-void ft_paint_shape(t_map *map, t_shape *shape)
+int ft_check_coord(int x, int y, t_shape *shape)
 {
-	
+	if(x < shape->xx || (shape->xx + shape->width) < x || \
+		y < shape->yy || (shape->yy + shape->height) < y)
+		return (0);
+	if(x - shape->xx < 1.0 || (shape->xx + shape->width) - x < 1.0 || \
+		y - shape->yy < 1.0 || (shape->yy + shape->height) - y < 1.0)
+		return (2);
+	return (1);
 }
 
-void ft_init_shape(t_map *map, t_shape *shape)
+void ft_paint_shape(t_map *map, t_shape *shape)
 {
+	int i;
+	int j;
 	int ret;
 
-	while((ret = fscanf(g_file, "%c %f %f %f %f %c\n", shape->type, shape->xx, shape->yy, \
-			shape->width, shape->height, shape->color) == 6))
+	j = 0;
+	while(j < map->height)
 	{
-		if(ret > 0 && ret < 6)
-			ft_error_message("Error: Operation file corrupted\n");
-		if(ret != -1)
+		i = 0;
+		while(i < map->with)
 		{
-			if(shape->width <= 0.0 || shape->height <= 0.0)
-				ft_error_message("Error: Operation file corrupted\n");
-			if(shape->type != 'r' && shape->type != 'R')
-				ft_error_message("Error: Operation file corrupted\n");
-			ft_paint_shape(map, shape);
+			ret = ft_check_coord(i, j, shape);
+			if((shape->type == 'r' && ret == 2) || (shape->type == 'R' && ret))
+				g_drawing[(map->with * j + i)] = shape->color;
+			i++;
 		}
+		j++;
+	}
+}
+
+void ft_init_shape(t_map *map)
+{
+	int ret;
+	t_shape shape;
+
+	while((ret = fscanf(g_file, "%c %f %f %f %f %c\n", &shape.type, &shape.xx, &shape.yy, \
+			&shape.width, &shape.height, &shape.color)) == 6)
+	{
+		if(shape.width <= 0.0 || shape.height <= 0.0)
+			ft_error_message("Error: Operation file corrupted\n");
+		if(shape.type != 'r' && shape.type != 'R')
+			ft_error_message("Error: Operation file corrupted\n");
+		ft_paint_shape(map, &shape);
 	}
 	if(ret != -1)
 		ft_error_message("Error: Operation file corrupted\n");
 }
 
+void ft_drawing(t_map *map)
+{
+	int i;
+
+	i = 0;
+	while(i < map->height)
+	{
+		write(1, g_drawing + (i * map->with), map->with);
+		write(1, "\n", 1);
+		i++;
+	}
+}
+
 int main(int argc, char **argv)
 {
 	t_map map;
-	t_shape shape;
 
 	g_file = NULL;
 	g_drawing = NULL;
-	map.height = 0;
-	map.height = 0;
-	map.background = 0;
 
 	if (argc != 2)
 		ft_error_message("Error: argument\n");
 	if (!(g_file = fopen(argv[1], "r")))
-		ft_error_message("Error: argument\n");
+		ft_error_message("Error: Operation file corrupted\n");
 	ft_init_map(&map);
-	ft_init_shape(&map, &shape);
-
-
-	
+	ft_init_shape(&map);
+	ft_drawing(&map);
 	ft_clear();
 	return (0);
 }
