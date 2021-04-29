@@ -6,7 +6,7 @@
 /*   By: agigi <agigi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 19:33:36 by agigi             #+#    #+#             */
-/*   Updated: 2021/04/29 03:48:46 by agigi            ###   ########.fr       */
+/*   Updated: 2021/04/30 00:25:18 by agigi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,22 +103,22 @@ int ft_check_coord(int x, int y, t_shape *shape)
 
 void ft_paint_shape(t_map *map, t_shape *shape)
 {
-	int i;
-	int j;
+	int x;
+	int y;
 	int ret;
 
-	j = 0;
-	while(j < map->height)
+	y = 0;
+	while(y < map->height)
 	{
-		i = 0;
-		while(i < map->with)
+		x = 0;
+		while(x < map->with)
 		{
-			ret = ft_check_coord(i, j, shape);
+			ret = ft_check_coord(x, y, shape);
 			if((shape->type == 'r' && ret == 2) || (shape->type == 'R' && ret))
-				g_drawing[(map->with * j + i)] = shape->color;
-			i++;
+				g_drawing[(map->with * y + x)] = shape->color;
+			x++;
 		}
-		j++;
+		y++;
 	}
 }
 
