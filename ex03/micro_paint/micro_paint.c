@@ -6,7 +6,7 @@
 /*   By: agigi <agigi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 19:33:36 by agigi             #+#    #+#             */
-/*   Updated: 2021/04/30 00:25:18 by agigi            ###   ########.fr       */
+/*   Updated: 2021/04/30 21:49:36 by agigi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,15 +85,13 @@ void ft_init_map(t_map *map)
 		ft_error_message("Error: Operation file corrupted\n");
 	if(map->height <= 0 || map->height > 300)
 		ft_error_message("Error: Operation file corrupted\n");
-	if(ret == -1)
-		ft_error_message("Error: Operation file corrupted\n");
 	ft_paint_background(map);
 }
 
 int ft_check_coord(int x, int y, t_shape *shape)
 {
-	if(x < shape->xx || (shape->xx + shape->width) < x || \
-		y < shape->yy || (shape->yy + shape->height) < y)
+	if(x < shape->xx || x > (shape->xx + shape->width) || \
+		y < shape->yy || y > (shape->yy + shape->height))
 		return (0);
 	if(x - shape->xx < 1.0 || (shape->xx + shape->width) - x < 1.0 || \
 		y - shape->yy < 1.0 || (shape->yy + shape->height) - y < 1.0)
