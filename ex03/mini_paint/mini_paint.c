@@ -6,7 +6,7 @@
 /*   By: agigi <agigi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 23:09:21 by agigi             #+#    #+#             */
-/*   Updated: 2021/04/30 00:57:49 by agigi            ###   ########.fr       */
+/*   Updated: 2021/05/01 11:43:39 by agigi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int ft_check_coord(float x, float y, t_shape *shape)
 {
 	float distance;
 
-	distance = sqrt(powf(x - shape->xx, 2) + powf(y - shape->yy, 2));
+	distance = sqrtf(powf(x - shape->xx, 2) + powf(y - shape->yy, 2));
 	if(distance <= shape->radius)
 	{
 		if((shape->radius - distance) < 1.0)
