@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/wait.h>
-#include <stdio.h>
 
 /*
 *This for test
@@ -56,14 +55,13 @@ void ft_cd(char **line) {
 	if (chdir(line[1])) {
 		ft_error_builtin("error: cd: cannot change directory to ", line[1]);
 	}
-
 }
 
 int main(int argc, char **argv, char **env) {
 	int i = 1;
 	char **line = NULL;
 	size_t size = 0;
-	size_t len = 0;
+	size_t count = 0;
 	int is_pipe = 0;
 	int fd[2];
 	int save_0 = 0;
@@ -88,10 +86,10 @@ int main(int argc, char **argv, char **env) {
 			ft_error_fatal("error: fatal\n");
 		}
 		line[size] = NULL;
-		len = 0;
-		while (len < size) {
-			line[len] = argv[i];
-			++len;
+		count = 0;
+		while (count < size) {
+			line[count] = argv[i];
+			++count;
 			++i;
 		}
 		if (argv[i] && !strcmp(argv[i], "|")) {
