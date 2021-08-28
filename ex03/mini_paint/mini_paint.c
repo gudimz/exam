@@ -6,7 +6,7 @@
 /*   By: agigi <agigi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 23:09:21 by agigi             #+#    #+#             */
-/*   Updated: 2021/04/30 00:57:49 by agigi            ###   ########.fr       */
+/*   Updated: 2021/05/06 11:33:56 by agigi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ typedef struct	s_map
 {
 	int width;
 	int height;
-	char bacground;
+	char background;
 }				t_map;
 
 typedef struct	s_shape
@@ -67,14 +67,14 @@ void ft_paint_background(t_map *map)
 	if(!(g_drawing = (char *) malloc((map->width * map->height) * sizeof(char *))))
 		ft_error_message("Error: malloc\n");
 	while(i < (map->width * map->height))
-		g_drawing[i++] = map->bacground;
+		g_drawing[i++] = map->background;
 }
 
 void ft_init_map(t_map *map)
 {
 	int ret;
 
-	ret = fscanf(g_file, "%i %i %c\n", &map->width, &map->height, &map->bacground);
+	ret = fscanf(g_file, "%i %i %c\n", &map->width, &map->height, &map->background);
 	if(ret != 3)
 		ft_error_message("Error: Operation file corrupted\n");
 	if(map->width <= 0 || map->width > 300)
@@ -88,7 +88,7 @@ int ft_check_coord(float x, float y, t_shape *shape)
 {
 	float distance;
 
-	distance = sqrt(powf(x - shape->xx, 2) + powf(y - shape->yy, 2));
+	distance = sqrtf(powf(x - shape->xx, 2) + powf(y - shape->yy, 2));
 	if(distance <= shape->radius)
 	{
 		if((shape->radius - distance) < 1.0)
