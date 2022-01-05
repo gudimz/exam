@@ -15,12 +15,10 @@ void SpellBook::learnSpell(ASpell* spell) {
 }
 
 void SpellBook::forgetSpell(std::string const& name) {
-	std::map<std::string, ASpell*>::iterator it;
-	it = spells.find(name);
-	if (it != spells.end()) {
-		delete it->second;
-		spells.erase(it);
+	if (spells.count(name)) {
+		delete spells[name];
 	}
+	spells.erase(name);
 }
 
 ASpell* SpellBook::createSpell(std::string const& name) {
