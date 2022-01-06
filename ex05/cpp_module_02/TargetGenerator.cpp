@@ -11,7 +11,9 @@ TargetGenerator::~TargetGenerator() {
 }
 
 void TargetGenerator::learnTargetType(ATarget* target) {
-	this->targets[target->getType()] = target->clone();
+	if (!targets.count(target->getType())) {
+		this->targets[target->getType()] = target->clone();
+	}
 }
 
 void TargetGenerator::forgetTargetType(std::string const& type) {

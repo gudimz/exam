@@ -11,14 +11,16 @@ SpellBook::~SpellBook() {
 }
 
 void SpellBook::learnSpell(ASpell* spell) {
-	this->spells[spell->getName()] = spell->clone();
+	if (!spells.count(spell->getName())) {
+		this->spells[spell->getName()] = spell->clone();
+	}
 }
 
 void SpellBook::forgetSpell(std::string const& name) {
 	if (spells.count(name)) {
 		delete spells[name];
+		spells.erase(name);
 	}
-	spells.erase(name);
 }
 
 ASpell* SpellBook::createSpell(std::string const& name) {
