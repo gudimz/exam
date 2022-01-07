@@ -42,7 +42,7 @@ void Warlock::forgetSpell(const std::string& name) {
 
 void Warlock::launchSpell(const std::string& name, const ATarget& target) {
 	if (spells.count(name)) {
-		target.getHitBySpell(*spells[name]);
+		spells[name]->launch(target);
 	}
 }
 
