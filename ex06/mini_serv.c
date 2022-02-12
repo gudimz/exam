@@ -70,7 +70,7 @@ int main(int argc, char* argv[]) {
 				break;
 			}
 			if (FD_ISSET(s, &readyRead) && s != servSocket) {
-				int res = recv(s, bufRead, strlen(bufRead), 0);
+				int res = recv(s, bufRead, 42 * 4096, 0);
 				if (res <= 0) {
 					sprintf(bufWrite, "server: client %d just left\n", id[s]);
 					send_all(s);
